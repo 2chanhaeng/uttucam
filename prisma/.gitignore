@@ -1,0 +1,5 @@
+# prisma
+*
+!.gitignore
+!schema.prisma
+!index.ts

@@ -25,7 +25,7 @@ A fun yet practical AI-powered web app that analyzes the emotional tone of a mes
 - 🔍 **Emotion Analysis**: Detect the emotion type and intensity from any free-text message.
 - 🌡️ **Temperature Visualization**: Show emotional weight with a clear thermometer or progress bar.
 - 🎯 **Response Style Selector**: Choose how you want to reply (e.g., Empathetic / Encouraging / Chill).
-- 💬 **AI-Generated Replies**: Get 2–3 response suggestions tailored to the emotional context.
+- 💬 **AI-Generated Replies**: Get 2-3 response suggestions tailored to the emotional context.
 - 🧪 _(Optional)_: Predict how the chosen reply might impact the sender's emotion.
 
 ---
@@ -48,10 +48,15 @@ git clone https://github.com/2chanhaeng/uttucam.git && cd ./uttucam
 yarn
 
 # 3. Set up environment variables
-# Add your OpenAI API key and other settings
-echo "OPENAI_API_KEY=your_openai_api_key_here" > .env.local
+# Add your API key and other settings
+echo "OPENAI_API_KEY=your_openai_api_key_here" >> .env.local
+echo "DATABASE_URL=your_database_url_here" >> .env.local
+echo "DIRECT_URL=your_direct_database_url_here" >> .env.local
 
-# 4. Run the dev server
+# 4. Generate Prisma client
+yarn db:gen
+
+# 5. Run the dev server
 yarn dev
 ```
 
