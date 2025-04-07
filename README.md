@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔥 UTTUCAM - AI Conversation Thermometer
 
-## Getting Started
+**Emotion Temperature-Based Auto-Response Generator**
+A fun yet practical AI-powered web app that analyzes the emotional tone of a message and recommends the most appropriate replies based on customizable response styles.
 
-First, run the development server:
+---
+
+## 🧠 What is it?
+
+**AI Conversation Thermometer** takes a user's input message (e.g., from a friend or coworker)  
+→ analyzes the emotional "temperature" of the message (e.g., frustration, sadness, joy)  
+→ visualizes it as a number (0°C to 100°C)  
+→ and generates reply suggestions depending on the selected response strategy (empathize, calm, redirect, etc.).
+
+---
+
+## 🚀 Live Demo
+
+(coming soon)
+
+---
+
+## ✨ Features
+
+- 🔍 **Emotion Analysis**: Detect the emotion type and intensity from any free-text message.
+- 🌡️ **Temperature Visualization**: Show emotional weight with a clear thermometer or progress bar.
+- 🎯 **Response Style Selector**: Choose how you want to reply (e.g., Empathetic / Encouraging / Chill).
+- 💬 **AI-Generated Replies**: Get 2–3 response suggestions tailored to the emotional context.
+- 🧪 _(Optional)_: Predict how the chosen reply might impact the sender's emotion.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/)
+- **UI / UX**: [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/)
+- **AI / NLP**: [OpenAI](https://openai.com/)
+
+---
+
+## 📦 Getting Started
 
 ```bash
-npm run dev
-# or
+# 1. Clone the repo
+git clone https://github.com/2chanhaeng/uttucam.git && cd ./uttucam
+
+# 2. Install dependencies
+yarn
+
+# 3. Set up environment variables
+# Add your OpenAI API key and other settings
+echo "OPENAI_API_KEY=your_openai_api_key_here" > .env.local
+
+# 4. Run the dev server
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `/app`: Next.js App Router
+- `/components`: Reusable UI components
+- `/api`: Emotion analysis & response generation APIs
+- `/types`: Shared TypeScript interfaces
+- `/lib`: AI prompt logic and utils
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔒 Environment Variables (`.env.local`)
 
-## Learn More
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🧭 Roadmap
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [ ] Basic emotion analysis
+- [ ] AI reply generation based on user-selected tone
+- [ ] Emotional response simulation (change prediction)
+- [ ] Share/export conversations
+- [ ] Mobile-first UX enhancements
+- [ ] Multi-language support
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🤝 Contributing
 
-## Deploy on Vercel
+Pull requests and ideas are welcome!
+This project is a great playground for anyone interested in AI + UX experiments.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🙌 Acknowledgements
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Inspired by human awkwardness, emotional friction, and the eternal struggle to text the “right thing.”
