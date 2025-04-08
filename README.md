@@ -49,9 +49,17 @@ yarn
 
 # 3. Set up environment variables
 # Add your API key and other settings
-echo "OPENAI_API_KEY=your_openai_api_key_here" >> .env.local
-echo "DATABASE_URL=your_database_url_here" >> .env.local
-echo "DIRECT_URL=your_direct_database_url_here" >> .env.local
+echo "
+DATABASE_URL=***
+DIRECT_URL=***
+AUTH_SECRET=***
+AUTH_GITHUB_ID=***
+AUTH_GITHUB_SECRET=***
+AUTH_DISCORD_ID=***
+AUTH_DISCORD_SECRET=***
+AUTH_RESEND_KEY=***
+GOOGLE_GENERATIVE_AI_API_KEY=***
+" >> .env.local
 
 # 4. Generate Prisma client
 yarn db:gen
