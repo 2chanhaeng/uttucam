@@ -1,25 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import ImageUpload from "./image-upload";
-import ImagePreview from "./image-preview";
-import OptionSelect from "./option-select";
+import { AnimatePresence } from "framer-motion";
 import FormNavigation from "./form-navigation";
 import type { ImageFile, Option } from "./types";
+import { cn } from "@/lib/utils";
+import ImageUploadField from "./image-upload-field";
+import ChoiceOptionField from "./choice-option-field";
+import { colors } from "@/lib/colors";
 
-export default function StartChatForm() {
+export default function StartChatForm({ className }: { className?: string }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [images, setImages] = useState<ImageFile[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
 
   // Sample options with different colors
   const options: Option[] = [
-    { id: "option1", label: "Option 1", color: "rose" },
-    { id: "option2", label: "Option 2", color: "blue" },
-    { id: "option3", label: "Option 3", color: "green" },
-    { id: "option4", label: "Option 4", color: "amber" },
-    { id: "option5", label: "Option 5", color: "purple" },
+    { id: "option1", label: "Option 1", color: colors[0] },
+    { id: "option2", label: "Option 2", color: colors[1] },
+    { id: "option3", label: "Option 3", color: colors[3] },
+    { id: "option4", label: "Option 4", color: colors[5] },
+    { id: "option5", label: "Option 5", color: colors[10] },
+    { id: "option6", label: "Option 6", color: colors[12] },
   ];
 
   const handleRemoveImage = (id: string) => {
@@ -58,7 +60,7 @@ export default function StartChatForm() {
 
   return (
     <form
-      className="w-full h-full flex flex-col"
+      className={cn("w-full h-full flex flex-col", className)}
       onSubmit={(e) => e.preventDefault()}
     >
       <div className="border-b pb-4">
@@ -73,38 +75,17 @@ export default function StartChatForm() {
       <div className="flex-grow overflow-hidden flex flex-col py-4">
         <AnimatePresence mode="wait">
           {currentStep === 0 ? (
-            <motion.div
-              key="step1"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="h-full flex flex-col"
-            >
-              <ImagePreview images={images} onRemove={handleRemoveImage} />
-              <ImageUpload
-                images={images}
-                onChange={setImages}
-                maxImages={5}
-                className={images.length > 0 ? "mt-auto" : "flex-grow"}
-              />
-            </motion.div>
+            <ImageUploadField
+              images={images}
+              setImages={setImages}
+              handleRemoveImage={handleRemoveImage}
+            />
           ) : (
-            <motion.div
-              key="step2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="flex-grow"
-            >
-              <OptionSelect
-                title="Select an option"
-                options={options}
-                value={selectedOption}
-                onChange={setSelectedOption}
-              />
-            </motion.div>
+            <ChoiceOptionField
+              options={options}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+            />
           )}
         </AnimatePresence>
       </div>

@@ -13,7 +13,7 @@ export default function ImagePreview({ images, onRemove }: ImagePreviewProps) {
   if (images.length === 0) return null;
 
   return (
-    <div className="flex-grow overflow-y-auto pr-2 mb-4">
+    <div className="flex-grow overflow-y-scroll pr-2 mb-4">
       <div className="space-y-3">
         {images.map((image) => (
           <div key={image.id} className="relative rounded-md overflow-hidden">
@@ -25,7 +25,7 @@ export default function ImagePreview({ images, onRemove }: ImagePreviewProps) {
             <Button
               variant="destructive"
               size="icon"
-              className="absolute top-2 right-2 h-6 w-6 rounded-full"
+              className="absolute top-2 right-2 h-6 w-6 rounded-full bg-transparent text-red-500 hover:bg-red-500 hover:text-white"
               onClick={() => onRemove(image.id)}
               type="button"
             >
