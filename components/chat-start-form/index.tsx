@@ -1,20 +1,27 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useChat } from "@ai-sdk/react";
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { initialMessages } from "./lib";
+import { FormEvent, useEffect, useState } from "react";
+import { fileArrayToFileList, initialMessages } from "./lib";
 import { AnswerOption } from "./types";
 import Phase1 from "./phase1";
 import Phase2 from "./phase2";
 import Phase3 from "./phase3";
+import Spinner from "@/components/spinner";
 
 export default function ChatStartForm() {
-  const { input, messages, setInput, handleSubmit, status } = useChat({
+  const {
+    input,
+    messages,
+    setInput,
+    handleSubmit,
+    status,
+    error,
+    setMessages,
+  } = useChat({
     initialMessages,
   });
-  const [files, setFiles] = useState<FileList | undefined>(undefined);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [options, setOptions] = useState<AnswerOption[]>([]);
   const [phase, setPhase] = useState(1);
   const [advice, setAdvice] = useState("");
@@ -23,16 +30,12 @@ export default function ChatStartForm() {
     // Phase 1: send the chat images
     if (files) {
       console.log("Phase 1", files);
+      const experimental_attachments = fileArrayToFileList(files);
       handleSubmit(event, {
-        experimental_attachments: files,
+        experimental_attachments,
         allowEmptySubmit: true,
       });
       setPhase(1.5);
-      // reset the files
-      setFiles(undefined);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     } else {
       event.preventDefault();
       // throw an alert if no images
@@ -51,18 +54,27 @@ export default function ChatStartForm() {
     const lastMessage = messages.at(-1);
     if (lastMessage && lastMessage.role === "assistant") {
       console.log("Last message:", lastMessage);
-      const json = lastMessage.content.match(/\[[^\]]*\]/gm);
+      const json = lastMessage.content.match(/\{[^\}]*\}/gm) ?? [];
       if (status === "ready" && !json) {
-        console.error("No JSON found in: ", lastMessage.content);
         // TODO: show toast
+        alert("Something went wrong. Please try again.");
+        setPhase(1);
+        return;
       }
-      try {
-        const newOptions = JSON.parse(json ? json[0] : "") as AnswerOption[];
-        setOptions(newOptions);
+      const newOptions: AnswerOption[] = json
+        .map((item) => {
+          try {
+            return JSON.parse(item);
+          } catch {
+            console.error("JSON parsing error:", json);
+            return null;
+          }
+        })
+        .filter((item) => item !== null);
+
+      setOptions(newOptions);
+      if (status === "ready") {
         setPhase(2);
-      } catch {
-        console.error("JSON parsing error:", json);
-        // TODO: show toast
       }
     }
   }, [phase, options, status, messages]);
@@ -92,35 +104,47 @@ export default function ChatStartForm() {
       setPhase(3);
     }
   }, [phase, status, messages]);
+
   useEffect(() => {
     console.log("Messages:", messages);
   }, [messages]);
 
+  useEffect(() => {
+    if (error) {
+      console.error(error);
+      console.log(error);
+      setMessages((prev) => [...prev.toSpliced(0, -1)]);
+      setPhase((num) => num - 0.5);
+    }
+  }, [error, setMessages]);
+
   return (
     <form
+      className="flex flex-col items-center justify-center w-full h-full max-w-lg p-4"
       onSubmit={(event) => {
         console.log("Form submitted");
         if (phase === 1) handlePhase1(event);
         else if (phase === 2) handlePhase2(event);
       }}
     >
-      <span
-        className={cn({
-          "bg-yellow-400": status === "submitted",
-          "bg-blue-500": status === "streaming",
-          "bg-teal-500": status === "ready",
-          "bg-red-500 text-white": status === "error",
-        })}
-      >
-        {status}
-      </span>
-      {phase === 1 ? (
-        <Phase1 files={files} setFiles={setFiles} fileInputRef={fileInputRef} />
-      ) : phase === 2 ? (
+      {phase <= 1 ? (
+        <Phase1 images={files} setImages={setFiles} />
+      ) : phase <= 2 ? (
         <Phase2 options={options} setInput={setInput} />
       ) : (
         <Phase3 advice={advice} />
       )}
+      <SpinnerWrapper status={status} />
+      {status === "error" && (
+        <div className="text-red-500">
+          {error?.message || "An error occurred. Please try again."}
+        </div>
+      )}
     </form>
   );
+}
+
+function SpinnerWrapper({ status }: { status: string }) {
+  if (status !== "streaming" && status !== "submitted") return null;
+  return <Spinner className="m-4 size-24" />;
 }
