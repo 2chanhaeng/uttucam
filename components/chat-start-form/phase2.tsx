@@ -18,16 +18,13 @@ export default function Phase2({
           key={`${tone}-${index}`}
           onClick={async (event) => {
             event.preventDefault();
-            console.log("event.currentTarget", event.currentTarget);
             // event.currentTarget is null after await
             // so form should be declared before await
             const form = event.currentTarget?.form;
-            console.log("form", form);
             if (form) {
               // without await, the form will be
               // submitted before setInput is called
               await setInput(tone);
-              console.log("Input set to:", tone);
               form.requestSubmit();
             }
           }}

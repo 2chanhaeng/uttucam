@@ -12,6 +12,7 @@ import { ImagePlus, Upload, Clipboard } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { append, isImageFile, setFileName } from "../lib";
+import { toast } from "sonner";
 
 interface ImageUploadProps {
   images: File[];
@@ -39,7 +40,6 @@ export default function Phase1ImageUpload({
   // Process files (from input or drop)
   const processFiles = useCallback(
     (files: FileList | File[] | null) => {
-      console.log("Processing files:", files);
       if (!files?.length) return;
       const newFiles = Array.from(files).filter(isImageFile);
       const totalImages = images.length + files.length;
@@ -47,7 +47,7 @@ export default function Phase1ImageUpload({
       // Limit to maxImages
       if (totalImages > maxImages) {
         // TODO: show toast
-        alert(`You can only upload up to ${maxImages} images`);
+        toast.error(`You can only upload up to ${maxImages} images`);
       }
 
       setImages(append(newFiles));
@@ -56,7 +56,6 @@ export default function Phase1ImageUpload({
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
-      console.log("New files added:", images.length);
     },
     [images, setImages, maxImages]
   );
@@ -74,7 +73,7 @@ export default function Phase1ImageUpload({
 
             // Check if adding this image would exceed the limit
             if (images.length + 1 > maxImages) {
-              alert(`You can only upload up to ${maxImages} images`);
+              toast.error(`You can only upload up to ${maxImages} images`);
             }
 
             setImages(append([setFileName(blob)]));
@@ -86,11 +85,11 @@ export default function Phase1ImageUpload({
       }
 
       if (!imageFound) {
-        alert("No image found in clipboard");
+        toast.error("No image found in clipboard");
       }
     } catch (err) {
       console.error("Failed to read clipboard contents: ", err);
-      alert("Failed to access clipboard. Please check permissions.");
+      toast.error("Failed to access clipboard. Please check permissions.");
     }
   };
 
@@ -107,7 +106,7 @@ export default function Phase1ImageUpload({
 
       // Check if adding these images would exceed the limit
       if (images.length + imageItems.length > maxImages) {
-        alert(`You can only upload up to ${maxImages} images`);
+        toast.error(`You can only upload up to ${maxImages} images`);
       }
 
       const newImages: File[] = imageItems
@@ -127,7 +126,6 @@ export default function Phase1ImageUpload({
   // Handle drag and drop
   useEffect(() => {
     const dropArea = dropAreaRef.current;
-    console.log("dropArea", dropArea);
     if (!dropArea) return;
 
     const handleDragOver = (e: DragEvent) => {

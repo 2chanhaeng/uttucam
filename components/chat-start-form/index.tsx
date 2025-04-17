@@ -8,6 +8,7 @@ import Phase1 from "./phase1";
 import Phase2 from "./phase2";
 import Phase3 from "./phase3";
 import Spinner from "@/components/spinner";
+import { toast } from "sonner";
 
 export default function ChatStartForm() {
   const {
@@ -29,7 +30,6 @@ export default function ChatStartForm() {
   const handlePhase1 = (event: FormEvent) => {
     // Phase 1: send the chat images
     if (files) {
-      console.log("Phase 1", files);
       const experimental_attachments = fileArrayToFileList(files);
       handleSubmit(event, {
         experimental_attachments,
@@ -38,9 +38,7 @@ export default function ChatStartForm() {
       setPhase(1.5);
     } else {
       event.preventDefault();
-      // throw an alert if no images
-      // TODO: show toast
-      alert("Please attach chat images");
+      toast.error("Please attach chat images");
       return;
     }
   };
@@ -53,11 +51,9 @@ export default function ChatStartForm() {
     // and parse the JSON from it, set the options state
     const lastMessage = messages.at(-1);
     if (lastMessage && lastMessage.role === "assistant") {
-      console.log("Last message:", lastMessage);
       const json = lastMessage.content.match(/\{[^\}]*\}/gm) ?? [];
       if (status === "ready" && !json) {
-        // TODO: show toast
-        alert("Something went wrong. Please try again.");
+        toast.error("Something went wrong. Please try again.");
         setPhase(1);
         return;
       }
@@ -67,6 +63,7 @@ export default function ChatStartForm() {
             return JSON.parse(item);
           } catch {
             console.error("JSON parsing error:", json);
+            toast.error("Something went wrong. Please try again.");
             return null;
           }
         })
@@ -81,13 +78,13 @@ export default function ChatStartForm() {
 
   const handlePhase2 = (event: FormEvent) => {
     // Phase 2: send the selected option
-    console.log({ Phase: "2.5", input });
     if (input !== "") {
       handleSubmit(event);
       setPhase(2.5);
     } else {
       event.preventDefault();
-      console.log("No input:", { input });
+      console.error("input is empty");
+      toast.error("Please select an option");
     }
   };
 
@@ -99,20 +96,14 @@ export default function ChatStartForm() {
     if (status === "streaming") {
       setAdvice(lastMessage.content);
     } else if (status === "ready") {
-      console.log("Last message:", lastMessage);
       setAdvice(lastMessage.content);
       setPhase(3);
     }
   }, [phase, status, messages]);
 
   useEffect(() => {
-    console.log("Messages:", messages);
-  }, [messages]);
-
-  useEffect(() => {
     if (error) {
       console.error(error);
-      console.log(error);
       setMessages((prev) => [...prev.toSpliced(0, -1)]);
       setPhase((num) => num - 0.5);
     }
@@ -122,7 +113,6 @@ export default function ChatStartForm() {
     <form
       className="flex flex-col items-center justify-center w-full h-full max-w-lg p-4"
       onSubmit={(event) => {
-        console.log("Form submitted");
         if (phase === 1) handlePhase1(event);
         else if (phase === 2) handlePhase2(event);
       }}
