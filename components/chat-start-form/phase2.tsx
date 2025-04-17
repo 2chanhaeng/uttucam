@@ -1,3 +1,6 @@
+"use client";
+
+import { Button } from "../ui/button";
 import { getBgColor } from "./lib";
 import { AnswerOption } from "./types";
 
@@ -9,9 +12,9 @@ export default function Phase2({
   setInput: (input: string) => void;
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="grid gap-2 grid-cols-2 auto-rows-max">
       {options.map(({ tone, content, color }, index) => (
-        <button
+        <Button
           key={`${tone}-${index}`}
           onClick={async (event) => {
             event.preventDefault();
@@ -29,12 +32,14 @@ export default function Phase2({
             }
           }}
           type="button"
-          className={getBgColor(color)}
+          className={
+            getBgColor(color) +
+            " text-foreground hover:scale-105 focus:scale-105 flex flex-col h-auto p-2 whitespace-normal"
+          }
         >
-          <span className="font-semibold text-lg">{tone}</span>
-          <br />
-          <span className="text-sm">{content}</span>
-        </button>
+          <h3 className="font-bold text-xl">{tone}</h3>
+          <p className="text-base block w-full">{content}</p>
+        </Button>
       ))}
     </div>
   );
