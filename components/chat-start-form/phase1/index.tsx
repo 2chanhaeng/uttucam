@@ -15,7 +15,7 @@ export default function Phase1({
 
   return (
     <section
-      className="h-full flex flex-col justify-end pb-4 max-h-[calc(100%-62px)]"
+      className="h-full flex flex-col justify-end pb-4 max-h-[calc(100%-62px)] mt-auto"
       ref={dropAreaRef}
     >
       <Summary show={isShowSummary} />

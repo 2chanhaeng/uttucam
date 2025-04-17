@@ -12,7 +12,7 @@ export default function Phase2({
   setInput: (input: string) => void;
 }) {
   return (
-    <div className="grid gap-2 grid-cols-2 auto-rows-max">
+    <div className="flex flex-col gap-2">
       {options.map(({ tone, content, color }, index) => (
         <Button
           key={`${tone}-${index}`}

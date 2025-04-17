@@ -105,7 +105,7 @@ export default function ChatStartForm() {
   useEffect(() => {
     if (error) {
       console.error(error);
-      setMessages((prev) => [...prev.toSpliced(0, -1)]);
+      setMessages((prev) => prev.slice(0, -1));
       setPhase((num) => num - 0.5);
     }
   }, [error, setMessages]);
@@ -118,7 +118,7 @@ export default function ChatStartForm() {
         else if (phase === 2) handlePhase2(event);
       }}
     >
-      <section className="p-4 w-full bg-background shadow-[0_5px_5px_-5px_#33333333]">
+      <section className="p-4 w-full bg-background shadow-[0_5px_5px_-5px_#33333333] mb-auto absolute top-0 max-w-lg z-10">
         <button
           type="button"
           className="text-foreground/60 hover:text-foreground focus:text-foreground disabled:text-foreground/20"
@@ -132,7 +132,7 @@ export default function ChatStartForm() {
             } else {
               setPhase(2);
               setAdvice("");
-              setMessages((prev) => [...prev.toSpliced(0, 3)]);
+              setMessages((prev) => prev.slice(0, 3));
             }
           }}
         >
