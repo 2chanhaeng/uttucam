@@ -112,7 +112,7 @@ export default function ChatStartForm() {
 
   return (
     <form
-      className="flex flex-col items-center justify-center w-full h-full max-w-lg p-4"
+      className="flex flex-col items-center justify-center w-full h-full max-w-lg px-4"
       onSubmit={(event) => {
         if (phase === 1) handlePhase1(event);
         else if (phase === 2) handlePhase2(event);

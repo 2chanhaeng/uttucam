@@ -14,7 +14,10 @@ export default function Phase1({
   const isShowSummary = images.length === 0;
 
   return (
-    <section className="h-full flex flex-col justify-end" ref={dropAreaRef}>
+    <section
+      className="h-full flex flex-col justify-end pb-4 max-h-[calc(100%-62px)]"
+      ref={dropAreaRef}
+    >
       <Summary show={isShowSummary} />
       <Phase1Images images={images} setImages={setImages} />
       <Phase1ImageUpload
