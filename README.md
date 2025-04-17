@@ -1,32 +1,22 @@
-# 🔥 UTTUCAM - AI Conversation Thermometer
+# 🔥 UTTUCAM - AI Conversation Helper
 
-**Emotion Temperature-Based Auto-Response Generator**
-A fun yet practical AI-powered web app that analyzes the emotional tone of a message and recommends the most appropriate replies based on customizable response styles.
-
----
-
-## 🧠 What is it?
-
-**AI Conversation Thermometer** takes a user's input message (e.g., from a friend or coworker)  
-→ analyzes the emotional "temperature" of the message (e.g., frustration, sadness, joy)  
-→ visualizes it as a number (0°C to 100°C)  
-→ and generates reply suggestions depending on the selected response strategy (empathize, calm, redirect, etc.).
+Uttucam is a AI assistant that helps you write better messages in conversations.
+You can upload a screenshot of a chat room, and Uttucam will provide you with examples of answers that would work well in that conversation.
 
 ---
 
 ## 🚀 Live Demo
 
-(coming soon)
+[uttucam.vercel.app](https://uttucam.vercel.app/)
 
 ---
 
 ## ✨ Features
 
-- 🔍 **Emotion Analysis**: Detect the emotion type and intensity from any free-text message.
-- 🌡️ **Temperature Visualization**: Show emotional weight with a clear thermometer or progress bar.
-- 🎯 **Response Style Selector**: Choose how you want to reply (e.g., Empathetic / Encouraging / Chill).
-- 💬 **AI-Generated Replies**: Get 2-3 response suggestions tailored to the emotional context.
-- 🧪 _(Optional)_: Predict how the chosen reply might impact the sender's emotion.
+- **AI-Powered**: Uses OpenAI's GPT-o4-mini to generate conversation suggestions.
+- **Screenshot Upload**: Upload a screenshot of your chat room for context.
+- **Text Suggestions**: Get multiple suggestions for responses based on the context of the conversation.
+- **User-Friendly UI**: Built with Next.js and Tailwind CSS for a smooth user experience.
 
 ---
 
@@ -50,30 +40,20 @@ yarn
 # 3. Set up environment variables
 # Add your API key and other settings
 echo "
-DATABASE_URL=***
-DIRECT_URL=***
-AUTH_SECRET=***
-AUTH_GITHUB_ID=***
-AUTH_GITHUB_SECRET=***
-AUTH_DISCORD_ID=***
-AUTH_DISCORD_SECRET=***
-AUTH_RESEND_KEY=***
-GOOGLE_GENERATIVE_AI_API_KEY=***
+OPENAI_API_KEY=your_openai_api_key_here
 " >> .env.local
 
-# 4. Generate Prisma client
-yarn db:gen
-
-# 5. Run the dev server
+# 4. Run the dev server
 yarn dev
+# or build and start
+yarn build
+yarn start
 ```
 
 ## Project Structure
 
 - `/app`: Next.js App Router
 - `/components`: Reusable UI components
-- `/api`: Emotion analysis & response generation APIs
-- `/types`: Shared TypeScript interfaces
 - `/lib`: AI prompt logic and utils
 
 ## 🔒 Environment Variables (`.env.local`)
@@ -81,15 +61,6 @@ yarn dev
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
 ```
-
-## 🧭 Roadmap
-
-- [ ] Basic emotion analysis
-- [ ] AI reply generation based on user-selected tone
-- [ ] Emotional response simulation (change prediction)
-- [ ] Share/export conversations
-- [ ] Mobile-first UX enhancements
-- [ ] Multi-language support
 
 ## 🤝 Contributing
 
