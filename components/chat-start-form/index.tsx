@@ -9,6 +9,7 @@ import Phase2 from "./phase2";
 import Phase3 from "./phase3";
 import Spinner from "@/components/spinner";
 import { toast } from "sonner";
+import { ChevronLeft } from "lucide-react";
 
 export default function ChatStartForm() {
   const {
@@ -117,6 +118,27 @@ export default function ChatStartForm() {
         else if (phase === 2) handlePhase2(event);
       }}
     >
+      <section className="p-4 w-full bg-background shadow-[0_5px_5px_-5px_#33333333]">
+        <button
+          type="button"
+          className="text-foreground/60 hover:text-foreground focus:text-foreground disabled:text-foreground/20"
+          disabled={phase <= 1}
+          onClick={(event) => {
+            event.preventDefault();
+            if (phase <= 2) {
+              setPhase(1);
+              setOptions([]);
+              setMessages(() => initialMessages);
+            } else {
+              setPhase(2);
+              setAdvice("");
+              setMessages((prev) => [...prev.toSpliced(0, 3)]);
+            }
+          }}
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+      </section>
       {phase <= 1 ? (
         <Phase1 images={files} setImages={setFiles} />
       ) : phase <= 2 ? (
